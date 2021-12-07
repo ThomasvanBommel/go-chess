@@ -16,7 +16,8 @@ Welcome to go-chess!
   A  B  C  D  E  F  G  H 
 
 Player # 1 , your turn!
-Enter your move: ```
+Enter your move:
+```
 
 ## Run
 `go run src/*.go`
