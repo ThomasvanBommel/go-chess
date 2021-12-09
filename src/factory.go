@@ -2,7 +2,7 @@ package main
 
 var id = 0
 
-func newPiece(name string, player int) Piece {
+func pieceFactory(name string, player int) Piece {
 	id++
 
 	switch name {

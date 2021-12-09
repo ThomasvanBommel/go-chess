@@ -1,7 +1,5 @@
 package main
 
-import "errors"
-
 type Piece interface {
 	getName() string
 	getPlayer() int
@@ -34,12 +32,4 @@ func (p PieceBase) isMe(p2 Piece) bool {
 	}
 
 	return false
-}
-
-func (p PieceBase) validateMove(move Move, b *Board) (bool, error) {
-	if !p.isMe(b.pieces[move.from[0]][move.from[1]]) {
-		return false, errors.New("Wrong piece.")
-	}
-
-	return true, nil
 }

@@ -39,9 +39,28 @@ func turn(b *Board) bool {
 	fmt.Println("Player #", player, ", your turn!")
 
 	move := requestMove()
+	// piece := b.pieces[move.from[0]][move.from[1]]
+	piece, _ := b.getPiece(move.from) // missing err
 
-	b.pieces[move.to[0]][move.to[1]] = b.pieces[move.from[0]][move.from[1]]
-	b.pieces[move.from[0]][move.from[1]] = nil
+	for {
+		valid, err := piece.validateMove(*move, b)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		if valid {
+			break
+		}
+
+		move = requestMove()
+	}
+	
+	// fmt.Println("Piece:", piece)
+
+	// b.pieces[move.to[0]][move.to[1]] = piece
+	b.setPiece(move.to, piece)
+	b.setPiece(move.from, nil)
 
 	firstPlayersTurn = !firstPlayersTurn
 
@@ -51,7 +70,8 @@ func turn(b *Board) bool {
 func main() {
 	introduction()
 
-	board := Board{}.init()
+	board := Board{}
+	board.init()
 	board.print()
 
 	for {
