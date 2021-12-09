@@ -9,13 +9,13 @@ func introduction() {
 	fmt.Println()
 }
 
-func requestMove() Move {
+func requestMove() *Move {
 	fmt.Print("Enter your move: ")
 
 	var input string
 	fmt.Scanln(&input)
 
-	move, err := newMove(input)
+	move, err := stringToMove(input)
 
 	if err != nil {
 		fmt.Println("Error:", err)

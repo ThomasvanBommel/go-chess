@@ -1,42 +1,35 @@
 package main
 
 import (
-	"fmt"
 	"errors"
 	"regexp"
+	"strings"
 )
 
 type Move struct {
 	from [2]int
 	to [2]int
+	distance [2]int
 }
 
-func newMove(input string) (Move, error) {
-	valid, err := regexp.MatchString("[A-H][1-8].[A-H][1-8]", input)
-
-	if err != nil {
-		return Move{}, err
-	}
-
-	if !valid {
-		return Move{}, errors.New("Invalid format. [A-H][1-8].[A-H][1-8]")
-	}
-
-	fmt.Println("Success!", input, "is a valid move!")
-
+func parseMove(input string) [2]int {
 	inp := []rune(input)
 
-	from := [2]int{ 
+	return [2]int{ 
 		int(inp[0] - []rune("A")[0]), 
 		int([]rune("8")[0] - inp[1]),
 	}
+}
 
-	to := [2]int{
-		int(inp[3] - []rune("A")[0]), 
-		int([]rune("8")[0] - inp[4]),
-	}
+func stringToMove(input string) (*Move, error) {
+	input = strings.ToUpper(input)
+	valid, err := regexp.MatchString("[A-H][1-8].[A-H][1-8]", input)
 
-	fmt.Println(from, to)
+	if err != nil { return &Move{}, err }
+	if !valid { return &Move{}, errors.New("Invalid format: [A-H][1-8].[A-H][1-8]") }
 
-	return Move{ from, to }, nil
+	from := parseMove(input[0:2])
+	to :=   parseMove(input[3:])
+
+	return &Move{ from, to, Distance(from, to) }, nil
 }
